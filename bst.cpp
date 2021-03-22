@@ -172,6 +172,10 @@ void deletes(node *R,int x){
         }
         free(pos);
     }
+     else if(pos->leftchild && pos->rightchild){
+        pos->key=pred->key;
+        deletes(pred,pred->key);
+    }
     //pos->key=pred->key;
     //par->rightchild=pred->leftchild;
 }
