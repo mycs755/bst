@@ -81,25 +81,22 @@ node * position(node *R,int x){
 }
 
 node *parent(node *R,int x){
-    node *t=NULL;
-    if(R==NULL){
+    cout<<"PPPPPPPPPPPPPPPPPP"<<endl;
+    
+    if(R==NULL || R->key==x){
         return NULL;
     }
-    if(R->leftchild!=NULL){
-        if(R->leftchild->key==x){
-            t = R;
-        }
+    
+    if((R->leftchild!=NULL && R->leftchild->key==x) || (R->rightchild!=NULL && R->rightchild->key==x)){
+        return R;
     }
-    else if(R->rightchild!=NULL){
-        if(R->rightchild->key==x){
-            t = R;
-        }
-    }
-    else{
-        return parent(R->leftchild,x);
-        return parent(R->rightchild,x);
-    }
+    node *t=parent(R->leftchild,x);
+    if(t!=NULL)
     return t;
+
+    t=parent(R->rightchild,x);
+    return t;
+    
 }
 node *predecessor(node *R,int x){
     vector<int> v1;
@@ -136,7 +133,7 @@ void deletes(node *R,int x){
     }
     else if(pos->leftchild==nullptr && pos->rightchild==nullptr){
         if(pos==R)
-        return nullptr;
+        return;
         else{
             if(par->leftchild==pos){
                 par->leftchild=nullptr;
@@ -255,7 +252,7 @@ int main(){
     int z;
     cin>>z;
     deletes(Root,z);
-   // vector<int>temperary;
-   // inorder(Root,temperary);
+    vector<int>temperary;
+    inorder(Root,temperary);
     return 0;
 }
