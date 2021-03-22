@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include <math.h>
 using namespace std;
 
 struct node{
@@ -175,6 +176,16 @@ void deletes(node *R,int x){
     }
     //pos->key=pred->key;
     //par->rightchild=pred->leftchild;
+}
+
+int longest_path(node *R){
+    if(R==NULL){
+        return 0;
+    }
+    node *leftside = longest_path(R->leftchild);
+    node *rightside = longest_path(R->rightchild);
+    
+    return max(leftside,rightside)+1;
 }
 
 int kth_smallest(node *R,int k){
