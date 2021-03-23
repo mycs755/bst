@@ -117,6 +117,25 @@ node *predecessor(node *R,int x){
         return NULL;
     }
 }
+
+
+
+void delete_all_leaves(node *R){
+    node *curr=R;
+    if(curr==NULL){
+        return;
+    }
+    if(curr->leftchild){
+        delete_all_leaves(curr->leftchild);
+    }
+    if(curr->rightchild){
+        delete_all_leaves(curr->rightchild);
+    }
+    if((curr->leftchild == NULL)  && (curr->rightchild == NULL)){
+        deletes(R,curr->key);
+    }
+
+}
 void deletes(node *R,int x){
     cout<<"LLLLLLLLLLLLLLLLL"<<endl;
     node *pos = position(R,x);
