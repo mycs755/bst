@@ -12,26 +12,26 @@ using namespace std;
 };*/
 struct node{
     int key;
-    int present_x_cord;
-    int type_endpoint;
-    int otherend_y_cord;
-    int otherend_x_cord;
+    int present_x_cord;  
+    int type_endpoint;  
+    int otherend_y_cord;  
+    int otherend_x_cord;  
     int line_type;
     node *leftchild;
     node* rightchild;
     int height;
 };
 struct lines{
-    int pres_end_x;
-    int other_end_x;
-    int pres_end_y;
-    int other_end_y;
-    int type_line;
-    int type_end;
+    int pres_end_x;  //presesnt x cordinate
+    int other_end_x;  //other end x cordinate
+    int pres_end_y;   //present y cordinate
+    int other_end_y;  //othe rend y cordinate
+    int type_line;  //type of line
+    int type_end;   //type of endpoint
 };
-struct compare_x_coord{
+struct compare_x_coord{  //push to queue based on x cordinate of line
      bool operator()(lines const& line1,lines const& line2) {
-         return line1.pres_end_x >= line2.pres_end_x;
+         return line1.pres_end_x > line2.pres_end_x;
      }
 };
 class intersection{
@@ -59,7 +59,7 @@ class intersection{
     int heights(node *R);
     
 };
-node* intersection::create_node(int a,int b,int c,int d,int e,int f){
+node* intersection::create_node(int a,int b,int c,int d,int e,int f){ // to create node of tree
     cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1"<<endl;
     node *newnode = new node();
     newnode->key = a;
@@ -70,11 +70,11 @@ node* intersection::create_node(int a,int b,int c,int d,int e,int f){
     newnode->type_endpoint=f;
     newnode->leftchild=NULL;
     newnode->rightchild=NULL;
-    newnode->height=1;
+    newnode->height=1; ////////////////////////////
     return newnode;
 }
 
-int intersection::heights(node *R){
+int intersection::heights(node *R){  //to get height of node
     cout<<"hhhhhhhhhhhhhhhhhhhhhh"<<endl;
     if(R==NULL){
         return 0;
@@ -85,15 +85,15 @@ int intersection::heights(node *R){
     return max(heights(leftside),heights(rightside))+1;
 }
 
-node* intersection::rightrotate(node *R){
+node* intersection::rightrotate(node *R){ //right rotation
     cout<<"rrrrrrrrrrrrrrrrrrrrrrrrrr"<<endl;
-    node* newroot = R->leftchild;
+    node* newroot = R->leftchild;  //left one will be new root
     //R->leftchild = NULL
     R->leftchild = newroot->rightchild;
-
+    
     newroot->rightchild=R;
-    R->height = heights(R);
-    newroot->height = heights(newroot);
+    R->height = heights(R);  //////////
+    newroot->height = heights(newroot); //updating height
     return newroot;
 }
 
@@ -107,7 +107,7 @@ node* intersection::leftrotate(node *R){
     return newroot;
 }
 
-node * intersection::insert(node* R,int a,int b,int c,int d,int e,int f){
+node * intersection::insert(node* R,int a,int b,int c,int d,int e,int f){ // to insert into tree
     if(R==NULL){
         cout<<"HHHHIIIIIIIIIII"<<endl;
         node *ne = create_node(a,b,c,d,e,f);
@@ -120,28 +120,30 @@ node * intersection::insert(node* R,int a,int b,int c,int d,int e,int f){
         R->rightchild=insert(R->rightchild,a,b,c,d,e,f);
     }
     int balance_factor =heights(R->leftchild)-heights(R->rightchild);
+    cout<<R->key<<endl;
+    cout<<"!@#$%^&*()&^%$#$%^&*()(*&%$#@!#$&"<<endl;
     if(balance_factor>1){ // if left subtree height more tha right subtree
         cout<<"[[[[[[[[[[[[[[["<<endl;
         if(heights(R->leftchild->leftchild)>=heights(R->leftchild->rightchild)){ //to check ll or lr
-            
+                         //  / model
             node * rr = rightrotate(R);
-            return rr;
+            return rr;   
         }
         else{  //lr
-        cout<<",,,,,,,,,,,"<<endl;
-            R->leftchild = leftrotate(R->leftchild);
+        cout<<",,,,,,,,,,,"<<endl;   // <  model
+          R->leftchild = leftrotate(R->leftchild);
             node * rr = rightrotate(R);
-            return rr;
+           return rr;
         }
     }
     if(balance_factor<-1){  // if right subtree height is more
     cout<<"{{{{{{{{{{"<<endl;
         if(heights(R->rightchild->rightchild)>=heights(R->rightchild->leftchild)){ //to check rr or rl
-            node * ll = leftrotate(R);
+            node * ll = leftrotate(R);    //  \ model
             return ll;
         }
         else{  //rl
-        cout<<"mmmmmmmmmmm"<<endl;
+        cout<<"mmmmmmmmmmm"<<endl;     //  > model
             R->leftchild = rightrotate(R->leftchild);
             node * ll = leftrotate(R);
             return ll;
@@ -153,7 +155,7 @@ node * intersection::insert(node* R,int a,int b,int c,int d,int e,int f){
 
 }
 
-node *intersection::parent(node *R,int x){
+node *intersection::parent(node *R,int x){ //to find parent
     //cout<<"PPPPPPPPPPPPPPPPPP"<<endl;
     
     if(R==NULL || R->key==x){
@@ -188,7 +190,7 @@ node * intersection::position(node *R,int x){
     return t;
 }
 
-node *intersection::predecessor(node *R,int x){
+node *intersection::predecessor(node *R,int x){ //to find predecessor
     vector<int> v1;
     inorder(R,v1);
     int t=0;
@@ -226,7 +228,7 @@ node * intersection::deletes(node *R,int x){
     if(pos==NULL){
         return NULL;
     }
-    else if(pos->leftchild==nullptr && pos->rightchild==nullptr){
+    else if(pos->leftchild==nullptr && pos->rightchild==nullptr){ //leaf
         if(pos==R)
         return NULL;
         else{
@@ -239,7 +241,7 @@ node * intersection::deletes(node *R,int x){
         free(pos);
     }
     else if((pos->leftchild==nullptr && pos->rightchild) || (pos->rightchild==nullptr && pos->leftchild)){
-        if(pos==R){
+        if(pos==R){                     //one child
             if(pos->rightchild && (pos->leftchild==nullptr)){
                 R=pos->rightchild;
             }
@@ -264,8 +266,13 @@ node * intersection::deletes(node *R,int x){
         }
         free(pos);
     }
-     else if(pos->leftchild && pos->rightchild){
+     else if(pos->leftchild && pos->rightchild){  // 2 childs
         pos->key=pred->key;
+        pos->line_type=pred->line_type;
+        pos->present_x_cord = pred->present_x_cord;
+        pos->otherend_x_cord=pred->otherend_x_cord;
+        pos->otherend_y_cord=pred->otherend_y_cord;
+        pos->type_endpoint=pred->type_endpoint;
         deletes(pred,pred->key);
     }
     //pos->key=pred->key;
@@ -280,12 +287,12 @@ node * intersection::deletes(node *R,int x){
         cout<<"[[[[[[[[[[[[[[["<<endl;
         if(heights(R->leftchild->leftchild)>=heights(R->leftchild->rightchild)){ //to check ll or lr
             
-            node * rr = rightrotate(R);
+            node * rr = rightrotate(R);  // / model
             return rr;
         }
-        else{  //lr
+        else{  //lr   rotate left then right
         cout<<",,,,,,,,,,,"<<endl;
-            R->leftchild = leftrotate(R->leftchild);
+            R->leftchild = leftrotate(R->leftchild);   // < model
             node * rr = rightrotate(R);
             return rr;
         }
@@ -293,10 +300,10 @@ node * intersection::deletes(node *R,int x){
     if(balance_factor<-1){  // if right subtree height is more
     cout<<"{{{{{{{{{{"<<endl;
         if(heights(R->rightchild->rightchild)>=heights(R->rightchild->leftchild)){ //to check rr or rl
-            node * ll = leftrotate(R);
+            node * ll = leftrotate(R); // \ model
             return ll;
         }
-        else{  //rl
+        else{  //rl    // > model
         cout<<"mmmmmmmmmmm"<<endl;
             R->leftchild = rightrotate(R->leftchild);
             node * ll = leftrotate(R);
@@ -362,32 +369,45 @@ void intersection::execute(){
        int t_l = ll.type_line;
        int t_e = ll.type_end;
        if(t_l==1){
-           if(t_e==1){
+           if(t_e==1){  // horizontal line left end point
                //keep in avl
                Root = insert(Root,y_cord,x_cord,o_y_cord,o_x_cord,t_l,t_e);
            }
-           else{
+           else{   // horizontal lie right end point
                //remove from avl
                Root = deletes(Root,y_cord);
            }
        }
-       else{
+       else{   //vertical line
            //check
             
             int k1=y_cord;
             int k2 = o_y_cord;
             int x_vertical = x_cord;
-            range_searching(Root,k1,k2,x_vertical);
+            range_searching(Root,k1,k2,x_vertical); //check 
        }
         
        min_q.pop();    
    }
     cout<<"???????????????????????????"<<endl; 
-   vector<int>v1;
+       vector<int>v1;
        inorder(Root,v1);
+       cout<<v1.size()<<"++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
        for(int i=0;i<v1.size();i++){
            cout<<v1[i]<<" ";
        }
+       cout<<"====================================================="<<endl;
+       //
+       
+       //cout<<Root->key;
+       //cout<<Root->leftchild->key;
+       //cout<<Root->rightchild->key;
+       //cout<<Root->leftchild->leftchild->key;
+       //cout<<Root->leftchild->rightchild->key;
+      // cout<<Root->rightchild->leftchild->key;
+      // cout<<Root->rightchild->rightchild->key;
+       
+       
        cout<<"???????????????????????????"<<endl; 
 }
 //void make_queue(vector<struct lines> l){
@@ -401,7 +421,7 @@ intersection::intersection(vector<int>v1,vector<int>v2){
        lines ls;
         //int count=0;
         for(int j=0;j<2;j++){
-        if(j==0){
+        if(j==0){  //from first end of horizontal
             cout<<"KKKKKKKKKKKK"<<endl;
             ls.pres_end_x=v1[i];
             ls.pres_end_y=v1[i+1];
@@ -411,8 +431,8 @@ intersection::intersection(vector<int>v1,vector<int>v2){
             ls.type_line=1;
             l.push_back(ls);
             
-        }
-        else{
+        } 
+        else{   //from other end for horizontal
             cout<<"JJJJJJJJJJJJJJJJ"<<endl;
             ls.pres_end_x=v1[i+2];
             ls.pres_end_y=v1[i+3];
@@ -425,7 +445,7 @@ intersection::intersection(vector<int>v1,vector<int>v2){
         }   
         i=i+4; 
     }
-    for(int i=0;i<v2.size();){
+    for(int i=0;i<v2.size();){  //for vertical
         cout<<"OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"<<endl;
         //vertical_line v;
         lines ls;
@@ -449,6 +469,7 @@ void intersection::display(){
    /* for(int i=0;i<vl.size();i++){
         cout<<vl[i].pres_end_x<<endl;;
     }*/
+    cout<<"Intersection points"<<endl;
     for(int i=0;i<all_intersection_points.size();){
         cout<<all_intersection_points[i]<<" "<<all_intersection_points[i+1]<<endl;
         i=i+2;
@@ -458,7 +479,7 @@ int main(){
     vector<int> v1;
     vector<int> v2;
     cout<<"enter horizontal"<<endl;
-    cout<<"enter number of horizontal lines"<<endl;
+    
     int n1;
     cin>>n1;
     int x;
@@ -467,6 +488,7 @@ int main(){
         v1.push_back(x);
     }
     cout<<endl;
+    cout<<"enter number of horizontal lines"<<endl;
     int n2;
     cin>>n2;
     for(int i=0;i<4*n2;i++){
